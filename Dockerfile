@@ -15,4 +15,4 @@ RUN npm install
 EXPOSE 3000
 
 # Comando para ejecutar la aplicación
-CMD ["nodemon", "server"]
+CMD ["node", "server.js"]
