@@ -9,19 +9,14 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 // Configuración de pines GPIO
-const sensorPin = 17;  // Puedes cambiar esto según la conexión de tu sensor
-const ledPin = 18;     // Puedes cambiar esto según la conexión de tu LED
+const sensorPin = 17;
+const ledPin = 18;
 
 rpio.open(ledPin, rpio.OUTPUT, rpio.LOW);
 
 // Manejador de eventos de conexión de Socket.IO
 io.on('connection', (socket) => {
     console.log('Cliente conectado');
-
-    // Manejar eventos del cliente (por ejemplo, encender/apagar LED)
-    socket.on('toggleLED', () => {
-        toggleLED();
-    });
 
     // Manejar eventos de desconexión del cliente
     socket.on('disconnect', () => {
@@ -31,7 +26,7 @@ io.on('connection', (socket) => {
 
 // Configurar la ruta principal
 app.get('/', (req, res) => {
-    res.send('<h1>Raspberry Pi IoT Server</h1>');
+    res.send('<h1>Raspberry Pi Pet Server</h1>');
 });
 
 // Leer datos del sensor DHT11 cada 2 segundos y emitir a clientes
@@ -49,13 +44,6 @@ function readDHTData() {
             console.error('Error al leer datos del sensor DHT11:', err);
         }
     });
-}
-
-// Función para encender/apagar el LED
-function toggleLED() {
-    const state = rpio.read(ledPin);
-    rpio.write(ledPin, state === rpio.LOW ? rpio.HIGH : rpio.LOW);
-    console.log(`LED ${state === rpio.LOW ? 'encendido' : 'apagado'}`);
 }
 
 // Iniciar el servidor
